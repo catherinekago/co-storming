@@ -1,127 +1,124 @@
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Basic Example — Networked-Aframe</title>
-    <meta name="description" content="Basic Example — Networked-Aframe" />
 
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
-    <script src="/easyrtc/easyrtc.js"></script>
-    <script src="https://unpkg.com/networked-aframe@^0.8.0/dist/networked-aframe.min.js"></script>
-    <script>
-      // see issue https://github.com/networked-aframe/networked-aframe/issues/267
-      NAF.schemas.getComponentsOriginal = NAF.schemas.getComponents;
-      NAF.schemas.getComponents = (template) => {
-        if (!NAF.schemas.hasTemplate("#avatar-template")) {
-          NAF.schemas.add({
-            template: '#avatar-template',
-             components: [
-              'position',
-              'rotation',
-              {
-                selector: '.head',
-                component: 'material',
-                property: 'color'
-              }
-            ]
-          });
-        }
-        const components = NAF.schemas.getComponentsOriginal(template);
-        return components;
+<head>
+  <meta charset="utf-8" />
+  <title>Basic Example — Networked-Aframe</title>
+  <meta name="description" content="Basic Example — Networked-Aframe" />
+
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
+  <script src="/easyrtc/easyrtc.js"></script>
+  <script src="https://unpkg.com/networked-aframe@^0.8.0/dist/networked-aframe.min.js"></script>
+  <script>
+    // see issue https://github.com/networked-aframe/networked-aframe/issues/267
+    NAF.schemas.getComponentsOriginal = NAF.schemas.getComponents;
+    NAF.schemas.getComponents = (template) => {
+      if (!NAF.schemas.hasTemplate("#avatar-template")) {
+        NAF.schemas.add({
+          template: '#avatar-template',
+          components: [
+            'position',
+            'rotation',
+            {
+              selector: '.head',
+              component: 'material',
+              property: 'color'
+            }
+          ]
+        });
       }
-    </script>
+      const components = NAF.schemas.getComponentsOriginal(template);
+      return components;
+    }
+  </script>
 
-    <script src="https://unpkg.com/aframe-randomizer-components@^3.0.1/dist/aframe-randomizer-components.min.js"></script>
-    <!--<script src="https://unpkg.com/aframe-particle-system-component@1.0.5/dist/aframe-particle-system-component.min.js"></script>-->
-    <script src="https://cdn.jsdelivr.net/gh/oneWaveAdrian/aframe-particle-system-component@aframe-1.2.0-upgrade/dist/aframe-particle-system-component.min.js"></script>
-    <script src="/js/cursor-listener.js"></script>
-  </head>
-  <body>
-    <a-scene networked-scene="
+  <script src="https://unpkg.com/aframe-randomizer-components@^3.0.1/dist/aframe-randomizer-components.min.js"></script>
+  <!--<script src="https://unpkg.com/aframe-particle-system-component@1.0.5/dist/aframe-particle-system-component.min.js"></script>-->
+  <script
+    src="https://cdn.jsdelivr.net/gh/oneWaveAdrian/aframe-particle-system-component@aframe-1.2.0-upgrade/dist/aframe-particle-system-component.min.js"></script>
+  <script src="/js/cursor-listener.js"></script>
+</head>
+
+<body>
+  <a-scene id="scene" networked-scene="
       room: basic;
       debug: true;
     ">
-      <a-assets>
+    <a-assets>
 
-        <img id="grid" src="https://img.gs/bbdkhfbzkk/stretch/https://i.imgur.com/25P1geh.png" crossorigin="anonymous">
-        <img id="sky" src="https://img.gs/bbdkhfbzkk/2048x2048,stretch/https://i.imgur.com/WqlqEkq.jpg" crossorigin="anonymous" />
+      <img id="grid" src="https://img.gs/bbdkhfbzkk/stretch/https://i.imgur.com/25P1geh.png" crossorigin="anonymous">
+      <img id="sky" src="https://img.gs/bbdkhfbzkk/2048x2048,stretch/https://i.imgur.com/WqlqEkq.jpg"
+        crossorigin="anonymous" />
 
-        <!-- Templates -->
-        <!-- Avatar -->
-        <template id="avatar-template">
-          <a-entity  class="avatar">
-            <a-sphere class="head"
-              scale="0.45 0.5 0.4"
-            ></a-sphere>
-            <a-entity class="face"
-              position="0 0.05 0"
-            >
-              <a-sphere class="eye"
-                color="#efefef"
-                position="0.16 0.1 -0.35"
-                scale="0.12 0.12 0.12"
-              >
-                <a-sphere class="pupil"
-                  color="#000"
-                  position="0 0 -1"
-                  scale="0.2 0.2 0.2"
-                ></a-sphere>
-              </a-sphere>
-              <a-sphere class="eye"
-                color="#efefef"
-                position="-0.16 0.1 -0.35"
-                scale="0.12 0.12 0.12"
-              >
-                <a-sphere class="pupil"
-                  color="#000"
-                  position="0 0 -1"
-                  scale="0.2 0.2 0.2"
-                ></a-sphere>
-              </a-sphere>
-            </a-entity>
+      <!-- Templates -->
+      <!-- Avatar -->
+      <template id="avatar-template">
+        <a-entity class="avatar">
+          <a-sphere class="head" scale="0.45 0.5 0.4"></a-sphere>
+          <a-entity class="face" position="0 0.05 0">
+            <a-sphere class="eye" color="#efefef" position="0.16 0.1 -0.35" scale="0.12 0.12 0.12">
+              <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
+            </a-sphere>
+            <a-sphere class="eye" color="#efefef" position="-0.16 0.1 -0.35" scale="0.12 0.12 0.12">
+              <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
+            </a-sphere>
           </a-entity>
-        </template>
+        </a-entity>
+      </template>
 
-        <!-- /Templates -->
-      </a-assets>
+      <!-- /Templates -->
+    </a-assets>
+    <a-entity id="wall" geometry="primitive: box" position=" 0 3 -6" scale=" 8 5 0.2" material="color: gray">
 
-      <a-entity cursor-listener id="player"
-                camera
-                networked="template:#avatar-template;attachTemplateToLocal:false;"
-                position="0 1.6 0"
-                wasd-controls
-                look-controls>
-                <a-entity cursor= "fuse: true; fuseTimeout: 500; rayOrigin: mouse"  raycaster="far: 250"
-                position="0 0 -1"
-                geometry="primitive: ring; radiusInner: 0.04; radiusOuter: 0.05"
-                material="color: black; shader: flat"
-                animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1"
-              ></a-entity>
-        <a-sphere class="head"
-          visible="false"
-          random-color
-        ></a-sphere>
+    </a-entity>
+    <a-entity id="player" camera networked="template:#avatar-template;attachTemplateToLocal:false;"
+      position="0 1.6 0" wasd-controls look-controls>
+      <a-entity id="cursor" cursor="fuse: true; fuseTimeout: 500;" raycaster="far: 250" position="0 0 -1"
+        geometry="primitive: ring; radiusInner: 0.04; radiusOuter: 0.05" material="color: black; shader: flat"
+        animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1">
       </a-entity>
+      <a-sphere class="head" visible="false" random-color></a-sphere>
+    </a-entity>
 
-      <a-entity position="0 0 0"
-        geometry="primitive: plane; width: 10000; height: 10000;" rotation="-90 0 0"
-        material="src: #grid; repeat: 10000 10000; transparent: true; metalness:0.6; roughness: 0.4; sphericalEnvMap: #sky;"></a-entity>
 
-      <a-entity light="color: #ccccff; intensity: 1; type: ambient;" visible=""></a-entity>
-      <a-entity light="color: #ffaaff; intensity: 1.5" position="5 5 5"></a-entity>
+    <a-entity position="0 0 0" geometry="primitive: plane; width: 10000; height: 10000;" rotation="-90 0 0"
+      material="src: #grid; repeat: 10000 10000; transparent: true; metalness:0.6; roughness: 0.4; sphericalEnvMap: #sky;">
+    </a-entity>
 
-      <a-sky src="#sky" rotation="0 -90 0"></a-sky>
-      <a-entity id="particles" particle-system="preset: snow"></a-entity>
-    </a-scene>
+    <a-entity light="color: #ccccff; intensity: 1; type: ambient;" visible=""></a-entity>
+    <a-entity light="color: #ffaaff; intensity: 1.5" position="5 5 5"></a-entity>
 
-    <script>
-      // On mobile remove elements that are resource heavy
-      var isMobile = AFRAME.utils.desvice.isMobile();
+    <a-sky src="#sky" rotation="0 -90 0"></a-sky>
+  </a-scene>
 
-      if (isMobile) {
-        var particles = document.getElementById('particles');
-        particles.parentNode.removeChild(particles);
+  <script>
+    var isMobile = AFRAME.utils.device.isMobile();
+    console.log(event);
+    if (!isMobile) {
+      // remove cursor
+      document.getElementById("cursor").setAttribute("visible", false);
+     
+      // add double click event
+      document.getElementById("scene").addEventListener("dblclick", function () {
+        console.log("double-click")
+      });
+      document.querySelector('#scene').addEventListener("touchstart", tapHandler);
+
+      var tapedTwice = false;
+      //detect double tap event for non-mobile
+      function tapHandler(event) {
+        if (!tapedTwice) {
+          tapedTwice = true;
+          setTimeout(function () { tapedTwice = false; }, 300);
+          return false;
+        }
+        event.preventDefault();
+        //action on double tap goes below
+        console.log('You tapped me Twice !!!');
+
       }
+
+    }
 
       // Define custom schema for syncing avatar color, set by random-color
       // NAF.schemas.add({
@@ -136,6 +133,7 @@
       //     }
       //   ]
       // });
-    </script>
-  </body>
+  </script>
+</body>
+
 </html>
