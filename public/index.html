@@ -53,8 +53,8 @@
       <!-- Templates -->
             <!-- Post It -->
           <template id="post-it-template">
-            <a-entity class="post-it" material="color: yellow" scale= "0.35 0.35 0.01" geometry="primitive:plane">
-              <a-entity geometry="primitive: plane" class="delete-icon" material="src:#delete-icon" scale="0.12 0.12 0" position="0.39 0.4 1">
+            <a-entity  class="post-it clickable" material="color: yellow" scale= "0.35 0.35 0.01" geometry="primitive:plane">
+              <a-entity delete="" geometry="primitive: plane" class="delete-icon clickable" material="src:#delete-icon" scale="0.12 0.12 0" position="0.39 0.4 1">
               </a-entity>
             </a-entity>
           </template>
@@ -80,7 +80,7 @@
     </a-entity>
     <a-entity id="player" camera networked="template:#avatar-template;attachTemplateToLocal:false;"
       position="0 1.6 0" wasd-controls look-controls>
-      <a-entity id="cursor" cursor="fuse: true; fuseTimeout: 500;" raycaster="far: 250" position="0 0 -1"
+      <a-entity id="cursor" cursor="rayOrigin: entity" raycaster="far: 250; objects: .clickable" position="0 0 -1"
         geometry="primitive: ring; radiusInner: 0.04; radiusOuter: 0.05" material="color: black; shader: flat"
         animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1">
       </a-entity>
@@ -103,30 +103,12 @@
 
   <script>
     var isMobile = AFRAME.utils.device.isMobile();
-    console.log(event);
     if (!isMobile) {
-      // remove cursor
-      document.getElementById("cursor").setAttribute("visible", false);
-     
-      // add double click event
-      document.getElementById("scene").addEventListener("dblclick", function () {
-        console.log("double-click")
-      });
-      document.querySelector('#scene').addEventListener("touchstart", tapHandler);
+      // make cursor invisible for non-mobile
+     document.getElementById("cursor").setAttribute("material", "opacity", "1.0");
+      document.getElementById("cursor").setAttribute("material", "transparency", "true");
+      document.getElementById("cursor").setAttribute("cursor", "rayOrigin", "mouse");
 
-      var tapedTwice = false;
-      //detect double tap event for non-mobile
-      function tapHandler(event) {
-        if (!tapedTwice) {
-          tapedTwice = true;
-          setTimeout(function () { tapedTwice = false; }, 300);
-          return false;
-        }
-        event.preventDefault();
-        //action on double tap goes below
-        console.log('You tapped me Twice !!!');
-
-      }
 
     }
 
