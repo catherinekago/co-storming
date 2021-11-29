@@ -9,6 +9,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
   <script src="/easyrtc/easyrtc.js"></script>
   <script src="https://unpkg.com/networked-aframe@^0.8.0/dist/networked-aframe.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.5.0/annyang.min.js"></script>
+  <script src="/js/aframe-speech-command-component.js"></script>
+
   <script>
     // see issue https://github.com/networked-aframe/networked-aframe/issues/267
     NAF.schemas.getComponentsOriginal = NAF.schemas.getComponents;
@@ -34,9 +37,8 @@
 
   <script src="https://unpkg.com/aframe-randomizer-components@^3.0.1/dist/aframe-randomizer-components.min.js"></script>
   <!--<script src="https://unpkg.com/aframe-particle-system-component@1.0.5/dist/aframe-particle-system-component.min.js"></script>-->
-  <script
-    src="https://cdn.jsdelivr.net/gh/oneWaveAdrian/aframe-particle-system-component@aframe-1.2.0-upgrade/dist/aframe-particle-system-component.min.js"></script>
   <script src="/js/delete.js"></script>
+    <script src="/js/addpostit.js"></script>
 </head>
 
 <body>
@@ -53,11 +55,19 @@
       <!-- Templates -->
             <!-- Post It -->
           <template id="post-it-template">
-            <a-entity  class="post-it clickable" material="color: yellow" scale= "0.35 0.35 0.01" geometry="primitive:plane">
-              <a-entity delete="" geometry="primitive: plane" class="delete-icon clickable" material="src:#delete-icon" scale="0.12 0.12 0" position="0.39 0.4 1">
+            <a-entity class="post-it clickable" material="color: yellow" geometry="primitive:plane">
+              <a-entity 
+              delete="" 
+              geometry="primitive: plane" 
+              class="delete-icon clickable" 
+              material="src:#delete-icon" 
+              scale="0.12 0.12 0" 
+              position="0.39 0.4 1">
+              <a-entity speech-command="command: delete; type: function; function: voiceDelete; targetElement: #cursor; targetComponent: teleporter; function: teleport; keyCode: 13"></a-entity>
               </a-entity>
             </a-entity>
           </template>
+
       <!-- Avatar -->
       <template id="avatar-template">
         <a-entity class="avatar">
@@ -73,11 +83,13 @@
         </a-entity>
       </template>
 
+      <template id="wall-template">
+        <a-entity addpostit="" class="clickable" id="wall" geometry="primitive: box" position=" 0 2.5 -6" scale=" 8 5 0.2" material="color: gray"></a-entity>
+      </template>
+
       <!-- /Templates -->
     </a-assets>
-    <a-entity id="wall" geometry="primitive: box" position=" 0 3 -6" scale=" 8 5 0.2" material="color: gray">
-
-    </a-entity>
+    <a-entity networked="template:#wall-template; attachTemplateToLocal:true"> </a-entity>
     <a-entity id="player" camera networked="template:#avatar-template;attachTemplateToLocal:false;"
       position="0 1.6 0" wasd-controls look-controls>
       <a-entity id="cursor" cursor="rayOrigin: entity" raycaster="far: 250; objects: .clickable" position="0 0 -1"
@@ -87,13 +99,10 @@
       <a-sphere class="head" visible="false" random-color></a-sphere>
     </a-entity>
 
-
+<a-entity id="annyang" annyang-speech-recognition></a-entity>
     <a-entity position="0 0 0" geometry="primitive: plane; width: 10000; height: 10000;" rotation="-90 0 0"
       material="src: #grid; repeat: 10000 10000; transparent: true; metalness:0.6; roughness: 0.4; sphericalEnvMap: #sky;">
-    </a-entity>
-
-    <a-entity id="first-post-it" position="0 1.6 -3" networked="template:#post-it-template; attachTemplateToLocal:true">
-    </a-entity>
+    </a-entity>>
 
     <a-entity light="color: #ccccff; intensity: 1; type: ambient;" visible=""></a-entity>
     <a-entity light="color: #ffaaff; intensity: 1.5" position="5 5 5"></a-entity>
@@ -102,14 +111,24 @@
   </a-scene>
 
   <script>
+
+    // Function to trigger delete via voice 
+    // Create the event
+    function voiceDelete() {
+      var event = new CustomEvent("voice-delete");
+      // Dispatch/Trigger/Fire the event
+document.dispatchEvent(event);
+    }
+
+
+
+
     var isMobile = AFRAME.utils.device.isMobile();
     if (!isMobile) {
       // make cursor invisible for non-mobile
      document.getElementById("cursor").setAttribute("material", "opacity", "1.0");
       document.getElementById("cursor").setAttribute("material", "transparency", "true");
       document.getElementById("cursor").setAttribute("cursor", "rayOrigin", "mouse");
-
-
     }
 
       // Define custom schema for syncing avatar color, set by random-color

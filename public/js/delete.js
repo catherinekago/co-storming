@@ -2,14 +2,13 @@ AFRAME.registerComponent('delete', {
 
   init: function () {
 
-    // Touch and Click Input
-    // Set double click detection 
     this.el.addEventListener("click", function (event) {
-      console.log("click");
-      console.log(event.target)
-      console.log(event.target.parentNode.remove())
       // delete parent component (post-it)
+      event.target.parentNode.remove();
     });
+
+
+          // Voice Input
 
     // this.el.addEventListener("touchstart", tapHandler);
     // // Set double tap detection
@@ -25,7 +24,7 @@ AFRAME.registerComponent('delete', {
     //   // delete parent component (post-it)
     //   console.log(event.target)
 
-      // Voice Input
+
 
   }
 });
