@@ -1,5 +1,5 @@
 /* global AFRAME, AFK */
-const validateKeyboardInput = require('../utils/events');
+const validateKeyboardInput = require('src/utils/events');
 
 if (typeof AFRAME === 'undefined') {
   throw new Error('Component attempted to register before AFRAME was available.');

@@ -1,4 +1,4 @@
-const getIntl = require('./i18n/index');
+const getIntl = require('src/i18n/index');
 
 const KEYBOARD_PADDING = 0.02;
 const KEY_PADDING = 0.004;
