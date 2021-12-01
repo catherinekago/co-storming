@@ -4,6 +4,7 @@ AFRAME.registerComponent('delete', {
 
     this.el.addEventListener("click", function (event) {
       // delete parent component (post-it)
+      event.stopPropagation();
       event.target.parentNode.remove();
     });
 

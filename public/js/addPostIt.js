@@ -8,7 +8,7 @@ AFRAME.registerComponent('addpostit', {
         var postIt = document.createElement('a-entity');
         postIt.setAttribute("id", "myPostIt");
         postIt.setAttribute("networked", "template:#post-it-template; attachTemplateToLocal:true");
-        let position = x + " " + (y)+ " " + "-5.88";
+        let position = x + " " + (y)+ " " + "-5.98";
         postIt.setAttribute("position", position);
         document.getElementById("scene").appendChild(postIt);
     }
