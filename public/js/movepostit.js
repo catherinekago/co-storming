@@ -13,6 +13,7 @@ AFRAME.registerComponent('movepostit', {
                 this.addState("selected");
                 this.addState(this.userId);
             } else {
+                // Drop post it if clicked on it again
                 if (this.is(this.userId)) {
                     console.log("dropped");
                     this.removeState("selected");
@@ -28,6 +29,16 @@ AFRAME.registerComponent('movepostit', {
                 console.log("selected just now!");
             }
         })
+
+    }, 
+    tick: function () {
+        if (this.el.is("selected") && this.el.is(this.userId)) {
+
+            let mousePositionX = document.getElementById("cursor").getAttribute("raycaster").direction.x;
+            let mousePositionY = document.getElementById("cursor").getAttribute("raycaster").direction.y;
+            let position = 16*mousePositionX + " " +(6 +  15*mousePositionY) + " " + "-5.98";
+            this.el.setAttribute("position", position);
+        }
     }
 
 });
