@@ -38,12 +38,12 @@
       }
     </script>
 
-
     <script src="https://unpkg.com/aframe-randomizer-components@^3.0.1/dist/aframe-randomizer-components.min.js"></script>
     <!--<script src="https://unpkg.com/aframe-particle-system-component@1.0.5/dist/aframe-particle-system-component.min.js"></script>-->
     <script src="/js/delete.js"></script>
     <script src="/js/addpostit.js"></script>
     <script src="/js/movepostit.js"></script>
+
 
   </head>
   <body>
@@ -60,6 +60,7 @@
     <!-- Post It -->
     <template id="post-it-template">
       <a-entity movepostit="Kago" class="post-it clickable" material="color: yellow" geometry="primitive:box" scale="1 1 0.00002">
+
         <a-entity 
         delete="" 
         geometry="primitive: plane" 
@@ -68,6 +69,7 @@
         scale="0.12 0.12 0" 
         position="0.39 0.4 14"
          >
+
         <a-entity speech-command="command: delete; type: function; function: voiceDelete; targetElement: #cursor; targetComponent: teleporter; function: teleport; keyCode: 13"></a-entity>
         </a-entity>
       </a-entity>
@@ -89,8 +91,8 @@
     </template>
     </a-assets>
 
-
     <a-entity addpostit="" class="clickable" id="wall" geometry="primitive: box" position=" 0 6 -6" scale=" 24 12 0.001" material="color: gray"></a-entity>
+
     <a-entity id="player" camera networked="template:#avatar-template;attachTemplateToLocal:false;"
     position="0 6 0" wasd-controls look-controls>
     <a-entity id="cursor" cursor="rayOrigin: entity" raycaster="far: 250; objects: .clickable" position="0 0 -1"
@@ -111,7 +113,8 @@
     <a-sky src="#sky" rotation="0 -90 0"></a-sky>
       
     <!-- Überschrift -->
-    <a-entity><a-text id="input" font="roboto" color="#000" value="Please insert your text..." scale="5 5 5" position="-6 8 -2"></a-text></a-entity> -->
+
+    <a-entity><a-text id="input" font="roboto" color="#000" value="Please insert your text..." scale="5 5 5" position="-6 8 -2"></a-text></a-entity>
     <!-- Keyboard -->
     <a-entity a-keyboard id="keyboard" position="-2 5 -5" scale="7 7 7"></a-entity>
     <!-- Mouse input -->
