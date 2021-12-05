@@ -29,9 +29,9 @@ AFRAME.registerComponent('delete', {
       return;
     }
     // Create post it if voice command has been provided
-    if(document.getElementById("wall").is("delete")) {
+    if(document.getElementById("wall").is("löschen")) {
       this.el.parentNode.remove();
-      document.getElementById("wall").removeState("delete");
+      document.getElementById("wall").removeState("löschen");
     }
   },
 });

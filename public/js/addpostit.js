@@ -56,14 +56,14 @@ AFRAME.registerComponent('addpostit', {
       return;
     }
     // Create post it if voice command has been provided
-    if(this.el.is("create")) {
+    if(this.el.is("neu")) {
       var postIt = document.createElement('a-entity');
       postIt.setAttribute("id", "myPostIt");
       postIt.setAttribute("networked", "template:#post-it-template; attachTemplateToLocal:true");
       let position = intersection.point.x + " " + intersection.point.y + " " + "-5.98";
       postIt.setAttribute("position", position);
       document.getElementById("scene").appendChild(postIt)
-      document.getElementById("wall").removeState("create");
+      document.getElementById("wall").removeState("neu");
     }
   },
     
