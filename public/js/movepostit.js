@@ -36,7 +36,7 @@ AFRAME.registerComponent('movepostit', {
 
             let mousePositionX = document.getElementById("cursor").getAttribute("raycaster").direction.x;
             let mousePositionY = document.getElementById("cursor").getAttribute("raycaster").direction.y;
-            let position = 16*mousePositionX + " " +(6 +  15*mousePositionY) + " " + "-5.98";
+            let position = 16*mousePositionX + " " +(6 +  15*mousePositionY) + " " + "-9.98";
             this.el.setAttribute("position", position);
         }
     }

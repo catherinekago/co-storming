@@ -7,7 +7,7 @@ AFRAME.registerComponent('addpostit', {
       var postIt = document.createElement('a-entity');
       postIt.setAttribute("id", "myPostIt");
       postIt.setAttribute("networked", "template:#post-it-template; attachTemplateToLocal:true");
-      let position = x + " " + (y) + " " + "-5.98";
+      let position = x + " " + (y) + " " + "-9.98";
       postIt.setAttribute("position", position);
       document.getElementById("scene").appendChild(postIt);
     }
@@ -60,7 +60,7 @@ AFRAME.registerComponent('addpostit', {
       var postIt = document.createElement('a-entity');
       postIt.setAttribute("id", "myPostIt");
       postIt.setAttribute("networked", "template:#post-it-template; attachTemplateToLocal:true");
-      let position = intersection.point.x + " " + intersection.point.y + " " + "-5.98";
+      let position = intersection.point.x + " " + intersection.point.y + " " + "-9.98";
       postIt.setAttribute("position", position);
       document.getElementById("scene").appendChild(postIt)
       document.getElementById("wall").removeState("neu");
