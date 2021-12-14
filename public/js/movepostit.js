@@ -26,19 +26,27 @@ AFRAME.registerComponent('movepostit', {
         // Add listener to event of being selected
         this.el.addEventListener("stateadded", function (event) {
             if (event.detail === "selected") {
-                console.log("selected just now!");
             }
-        })
+        });
+
+        this.el.addEventListener('raycaster-intersected', evt => {
+            this.raycaster = evt.detail.el;
+          });
+
 
     }, 
     tick: function () {
         if (this.el.is("selected") && this.el.is(this.userId)) {
-
-            let mousePositionX = document.getElementById("cursor").getAttribute("raycaster").direction.x;
-            let mousePositionY = document.getElementById("cursor").getAttribute("raycaster").direction.y;
-            let position = 16*mousePositionX + " " +(6 +  15*mousePositionY) + " " + "-9.98";
+            if (!this.raycaster) { return; }  // Not intersecting.
+            let intersection = this.raycaster.components.raycaster.getIntersection(document.getElementById("wall"));
+            if (!intersection) { return; } // Not intersecting
+            // intersecting
+            let positionX = intersection.point.x <= -9.4 ? "-9.4" : (intersection.point.x >= 9.4 ? "9.4" : intersection.point.x)
+            let positionY = intersection.point.y >= 11.4 ? "11.4" : (intersection.point.y <= 0.56 ? "0.56" : intersection.point.y)
+            let position = positionX + " " + positionY + " " + "-9.98";
             this.el.setAttribute("position", position);
         }
+
     }
 
 });
