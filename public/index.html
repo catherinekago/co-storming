@@ -98,7 +98,7 @@
       material="color: gray"></a-entity>
 
     <a-entity id="player" multitouch-look-controls camera position="0 6 -4" >
-      <a-entity id="cursor" cursor="rayOrigin: mouse" raycaster="far: 250; objects: .clickable; useWorldCoorindates: true"
+      <a-entity id="cursor" cursor="rayOrigin: mouse" raycaster="far: 250; objects: .clickable;"
         position="0 0 -1" geometry="primitive: ring; radiusInner: 0.04; radiusOuter: 0.05"
         material="color: black; shader: flat"
         animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1">
@@ -155,7 +155,6 @@
 
 
     <script>
-
       // Add web speech api 
       window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -165,7 +164,6 @@
       const recognition = new SpeechRecognition();
       recognition.interimResults = true;
       recognition.lang = 'de-DE';
-      console.log(recognition)
 
       // waiting for speech results
       recognition.addEventListener('result', event => {
@@ -186,8 +184,18 @@
               document.getElementById("wall").addState("löschen");
             }
 
+          } else if (transcript.indexOf('nimm') == 0){
+            if (!document.getElementById("wall").is("selected")){
+              console.log("selected")
+              document.getElementById("wall").addState("selected");
           }
         }
+
+        } else if (transcript.indexOf('passt') == 0 || transcript.indexOf('hast') == 0){
+          if (!document.getElementById("wall").is("deselected")){
+              document.getElementById("wall").addState("deselected");
+        }
+      }
       });
 
       recognition.addEventListener('end', recognition.start);

@@ -1,7 +1,7 @@
 AFRAME.registerComponent('movepostit', {
 
     schema: {
-        userId: {type: "string", default: "none"}
+        userId: { type: "string", default: "none" }
     },
 
     init: function () {
@@ -9,15 +9,15 @@ AFRAME.registerComponent('movepostit', {
         // Add listener that selects and deselects a post it 
         this.el.addEventListener('click', function (event) {
             if (!this.is("selected")) {
-                console.log("clicked");
                 this.addState("selected");
                 this.addState(this.userId);
+                document.getElementById("wall").removeState("selected");
             } else {
                 // Drop post it if clicked on it again
                 if (this.is(this.userId)) {
-                    console.log("dropped");
                     this.removeState("selected");
                     this.removeState(this.userId);
+                    document.getElementById("wall").removeState("deselected");
                 }
             }
 
@@ -31,11 +31,21 @@ AFRAME.registerComponent('movepostit', {
 
         this.el.addEventListener('raycaster-intersected', evt => {
             this.raycaster = evt.detail.el;
-          });
+            this.el.addState("intersected");
+        });
+
+        this.el.addEventListener('raycaster-intersected-cleared', evt => {
+            this.raycaster = null;
+            this.el.removeState("intersected");
+        });
 
 
-    }, 
+    },
     tick: function () {
+        if (!this.raycaster) {
+            return;
+          }  // Not intersecting.
+
         if (this.el.is("selected") && this.el.is(this.userId)) {
             if (!this.raycaster) { return; }  // Not intersecting.
             let intersection = this.raycaster.components.raycaster.getIntersection(document.getElementById("wall"));
@@ -46,7 +56,22 @@ AFRAME.registerComponent('movepostit', {
             let position = positionX + " " + positionY + " " + "-9.98";
             this.el.setAttribute("position", position);
         }
-
+        let intersection = this.raycaster.components.raycaster.getIntersection(this.el);
+        if (!intersection) {
+            return;
+        }
+        if (intersection && !this.el.is("selected") && document.getElementById("wall").is("selected")) {
+            this.el.addState("selected");
+            this.el.addState(this.el.userId);
+            document.getElementById("wall").removeState("selected");
+            console.log("understood")
+        } else if (intersection && !this.el.is("deselected") && document.getElementById("wall").is("deselected")) {
+            if (this.el.is(this.el.userId)) {
+                this.el.removeState("selected");
+                this.el.removeState(this.el.userId);
+            }
+            document.getElementById("wall").removeState("deselected");
+        }
     }
 
 });
