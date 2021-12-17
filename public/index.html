@@ -85,8 +85,8 @@
         text="baseline:center; align:center; anchor: center; width:4; value: Rosa; color:black">
       </a-entity>
 
-      <a-entity selectcolor="color: #c84" id="color-input-orange" class="color-btn clickable" geometry="primitive: plane"
-        position="0.15 -0.15 0.02" scale=" 0.1 0.13 0.1" material="color: white"
+      <a-entity selectcolor="color: #c84" id="color-input-orange" class="color-btn clickable"
+        geometry="primitive: plane" position="0.15 -0.15 0.02" scale=" 0.1 0.13 0.1" material="color: white"
         text="baseline:center; align:center; anchor: center; width:4; value: Orange; color:black">
       </a-entity>
 
@@ -179,7 +179,6 @@
       // waiting for speech results
       recognition.addEventListener('result', event => {
         const transcript = event.results[0][0].transcript;
-        console.log(transcript);
         // check if the voice input has ended
         if (event.results[0].isFinal) {
 
@@ -205,13 +204,15 @@
         } else if (transcript.indexOf('passt') == 0 || transcript.indexOf('hast') == 0) {
           if (!document.getElementById("wall").is("deselected")) {
             document.getElementById("wall").addState("deselected");
-
-          } else if (transcript.indexOf('fertig') == 0 || transcript.indexOf('fertig') == 0) {
-            if (!document.getElementById("wall").is("fertig")) {
-              document.getElementById("wall").addState("fertig");
-            }
           }
         }
+        // Welcome Screen Interaction
+        if (document.getElementById("welcome-screen") !== undefined) {
+          if (transcript.indexOf('fertig') == 0 && !document.getElementById("welcome-screen").is("fertig")) {
+            document.getElementById("wall").addState("fertig");
+          }
+        }
+
       });
 
       recognition.addEventListener('end', recognition.start);

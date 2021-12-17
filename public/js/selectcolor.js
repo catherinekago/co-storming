@@ -31,9 +31,13 @@ AFRAME.registerComponent('selectcolor', {
     },
   
     tick: function () {
-        if(this.el.is("selected")){
+    
+        if(this.el.is("selected") && this.el.getAttribute("material").color !== this.data.color){
             this.el.setAttribute("material", "color", this.data.color);
-        } else {
+            // todo: how to access template?
+            console.log(document.getElementById("post-it-template").content);
+
+        } else if (!this.el.is("selected")) {
             this.el.setAttribute("material", "color", "white");
         }
       if (!this.raycaster) {
@@ -45,9 +49,9 @@ AFRAME.registerComponent('selectcolor', {
         return;
       }
       // Create post it if voice command has been provided
-      if(document.getElementById("wall").is("fertig")) {
+      if(document.getElementById("welcome-screen").is("fertig")) {
         this.el.parentNode.remove();
-        document.getElementById("wall").removeState("fertig");
+        document.getElementById("welcome-screen").removeState("fertig");
       }
     },
   });
