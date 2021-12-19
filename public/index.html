@@ -218,28 +218,31 @@
       // waiting for speech results
       recognition.addEventListener('result', event => {
         const transcript = event.results[0][0].transcript;
-        console.log(transcript);
+
         // check if the voice input has ended
         if (event.results[0].isFinal) {
-
+          console.log(transcript);
           // Welcome Screen Interaction
-          if (document.getElementById("welcome-screen") !== undefined) {
+          if (document.getElementById("welcome-screen") !== null) {
+            console.log("on the wall")
             if (transcript.indexOf('fertig') == 0 && !document.getElementById("welcome-screen").is("fertig")) {
-              document.getElementById("wall").addState("fertig");
+              document.getElementById("welcome-submit").click();
               // If value of name is empty, put last heard utterance into it 
             } else if (document.getElementById("name-input").getAttribute("value").length === 0) {
-              console.log(transcript[0])
+              document.getElementById("scene").setAttribute("setupuser", "username",  transcript);
+              document.getElementById("name-input").setAttribute("value", document.getElementById("scene").getAttribute("setupuser").username)
+
             }
-            else if (transcript.indexOf('blau') == 0 && !document.getElementById("color-inpupt-blue").is("selected")) {
-              document.getElementById("color-input-blue").addState("selected");
-            } else if (transcript.indexOf('grün') == 0 && !document.getElementById("color-inpupt-green").is("selected")) {
-              document.getElementById("color-input-green").addState("selected");
-            } else if (transcript.indexOf('rot') == 0 && !document.getElementById("color-inpupt-red").is("selected")) {
-              document.getElementById("color-input-red").addState("selected");
-            } else if (transcript.indexOf('rosa') == 0 && !document.getElementById("color-inpupt-pink").is("selected")) {
-              document.getElementById("color-input-pink").addState("selected");
-            } else if (transcript.indexOf('orange') == 0 && !document.getElementById("color-inpupt-orange").is("selected")) {
-              document.getElementById("color-input-orange").addState("selected");
+            else if (transcript.indexOf('blau') == 0 && !document.getElementById("color-input-blue").is("selected")) {
+              document.getElementById("color-input-blue").click();
+            } else if (transcript.indexOf('grün') == 0 && !document.getElementById("color-input-green").is("selected")) {
+              document.getElementById("color-input-green").click();
+            } else if (transcript.indexOf('rot') == 0 && !document.getElementById("color-input-red").is("selected")) {
+              document.getElementById("color-input-red").click();
+            } else if (transcript.indexOf('rosa') == 0 && !document.getElementById("color-input-pink").is("selected")) {
+              document.getElementById("color-input-pink").click();
+            } else if (transcript.indexOf('orange') == 0 && !document.getElementById("color-input-orange").is("selected")) {
+              document.getElementById("color-input-orange").click();
             }
           } else {
             // check if the input starts with 'create'
