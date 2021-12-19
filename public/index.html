@@ -9,7 +9,6 @@
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <script src="https://unpkg.com/networked-aframe@^0.8.0/dist/networked-aframe.min.js"></script>
   <script src="https://morandd.github.io/aframe-multitouch-look-controls/multitouch-look-controls.js"></script>
-  <!-- <script src="https://unpkg.com/aframe-randomizer-components@^3.0.1/dist/aframe-randomizer-components.min.js"></script> -->
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
   <script src="/easyrtc/easyrtc.js"></script>
@@ -21,12 +20,14 @@
   <script src="/js/movepostit.js"></script>
   <script src="/js/submitinfo.js"></script>
   <script src="/js/selectcolor.js"></script>
+  <script src="/js/setupuser.js"></script>
 </head>
 
 
 
 <body>
-  <a-scene detectpostits id="scene" networked-scene="room: basic; debug: true;" keyboard-shortcuts="enterVR: false">
+  <a-scene detectpostits setupuser="" id="scene" networked-scene="room: basic; debug: true;"
+    keyboard-shortcuts="enterVR: false">
     <a-assets>
       <img id="delete-icon" src="/assets/delete.svg">
       <img id="grid" src="https://img.gs/bbdkhfbzkk/stretch/https://i.imgur.com/25P1geh.png" crossorigin="anonymous">
@@ -38,13 +39,7 @@
       <!-- Templates -->
       <!-- Post It -->
       <template id="post-it-template">
-        <a-entity movepostit="Kago" class="post-it clickable" material="color: #ca9" geometry="primitive:box"
-          scale="1 1 0.00002">
-          <a-entity id="nameTag" scale="0.5 0.14 0.1" material="color: #c78" geometry="primitive: plane;"
-            position="-0.2 0.39 1000">
-            <a-entity id="name" scale="1.4 4.5 2" position="2.4 0 1000" text="value: Marion; color:black;width: 4;">
-            </a-entity>
-          </a-entity>
+        <a-entity movepostit="Kago" class="post-it clickable" geometry="primitive:box" scale="1 1 0.00002">
           <a-entity delete="" geometry="primitive: plane" class="delete-icon clickable" material="src:#delete-icon"
             scale="0.12 0.12 0" position="0.39 0.4 100">
 
@@ -54,7 +49,21 @@
           </a-entity>
         </a-entity>
       </template>
+
+      <template id="post-it-text">
+        <a-entity scale="0.9 0.7 0.7" position="-0.45 0.1 1000" text="width: 3; color: black">
+        </a-entity>
+        </a-entity>
+      </template>
+
+      <template id="post-it-name">
+        <a-entity id="name" scale="0.6 0.8 2" position="0.75 0.37 1000" text="color:black;width: 4;">
+        </a-entity>
+      </template>
+
     </a-assets>
+
+
 
     <!-- Welcome Screen -->
     <a-entity id="welcome-screen" geometry="primitive: plane" position=" 0 6 -4.1" scale=" 0.2 0.14 0.4"
@@ -64,7 +73,7 @@
       <a-text color="#ca9" position="0 0.25 0.02" width="2" scale=" 0.3 0.3 0.1" baseline="center" align="center"
         anchor="center" value="Hey, wie heisst du?"></a-text>
       <a-text id="name-input" position="0 0.19 0.02" width="3" scale=" 0.3 0.3 0.1" baseline="center" align="center"
-        anchor="center" value="This is where the name will be typed"></a-text>
+        anchor="center" value=""></a-text>
       <!-- TODO: this one should appear with personalized Text once keyboard input has been submitted -->
       <a-text color="#ca9" position="0 0.05 0.02" width="2" scale=" 0.3 0.3 0.1" baseline="center" align="center"
         anchor="center" value="Wilkommen, XY! \n \n  Waehle deine Farbe, \n und dann geht es auch schon los!"></a-text>
@@ -101,8 +110,8 @@
       </a-entity>
     </a-entity>
 
-    <a-entity addpostit="userName: Kago; color: #000" id="wall" geometry="primitive: box" position=" 0 6 -10"
-      scale=" 20 12 0.001" material="color: gray"></a-entity>
+    <a-entity addpostit="" id="wall" geometry="primitive: box" position=" 0 6 -10" scale=" 20 12 0.001"
+      material="color: gray"></a-entity>
     <a-entity id="wallLeft" geometry="primitive: box" rotation="0 90 0" position=" -10 6 0" scale=" 20 12 0.001"
       material="color: gray"></a-entity>
     <a-entity addpostit="" id="wallRight" rotation="0 90 0" geometry="primitive: box" position=" 10 6 0"
@@ -166,6 +175,36 @@
 
 
     <script>
+
+      // Add schemas to templates
+      NAF.schemas.add({
+        template: '#post-it-template',
+        components: [
+          'position',
+          'rotation',
+          'material'
+        ]
+      });
+
+      NAF.schemas.add({
+        template: '#post-it-text',
+        components: [
+          'position',
+          'rotation',
+          'material',
+          'text'
+        ]
+      });
+
+      NAF.schemas.add({
+        template: '#post-it-name',
+        components: [
+          'position',
+          'rotation',
+          'text'
+        ]
+      });
+
       // Add web speech api 
       window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -179,40 +218,55 @@
       // waiting for speech results
       recognition.addEventListener('result', event => {
         const transcript = event.results[0][0].transcript;
+        console.log(transcript);
         // check if the voice input has ended
         if (event.results[0].isFinal) {
 
-          // check if the input starts with 'create'
-          if (transcript.indexOf('neu') == 0) {
-            if (!document.getElementById("wall").is("neu")) {
-              document.getElementById("wall").addState("neu");
+          // Welcome Screen Interaction
+          if (document.getElementById("welcome-screen") !== undefined) {
+            if (transcript.indexOf('fertig') == 0 && !document.getElementById("welcome-screen").is("fertig")) {
+              document.getElementById("wall").addState("fertig");
+              // If value of name is empty, put last heard utterance into it 
+            } else if (document.getElementById("name-input").getAttribute("value").length === 0) {
+              console.log(transcript[0])
             }
-
-            // check if the input starts with 'delete'
-          } else if (transcript.indexOf('löschen') == 0) {
-            if (!document.getElementById("wall").is("löschen")) {
-              document.getElementById("wall").addState("löschen");
+            else if (transcript.indexOf('blau') == 0 && !document.getElementById("color-inpupt-blue").is("selected")) {
+              document.getElementById("color-input-blue").addState("selected");
+            } else if (transcript.indexOf('grün') == 0 && !document.getElementById("color-inpupt-green").is("selected")) {
+              document.getElementById("color-input-green").addState("selected");
+            } else if (transcript.indexOf('rot') == 0 && !document.getElementById("color-inpupt-red").is("selected")) {
+              document.getElementById("color-input-red").addState("selected");
+            } else if (transcript.indexOf('rosa') == 0 && !document.getElementById("color-inpupt-pink").is("selected")) {
+              document.getElementById("color-input-pink").addState("selected");
+            } else if (transcript.indexOf('orange') == 0 && !document.getElementById("color-inpupt-orange").is("selected")) {
+              document.getElementById("color-input-orange").addState("selected");
             }
+          } else {
+            // check if the input starts with 'create'
+            if (transcript.indexOf('neu') == 0) {
+              if (!document.getElementById("wall").is("neu")) {
+                document.getElementById("wall").addState("neu");
+              }
 
-          } else if (transcript.indexOf('nimm') == 0) {
-            if (!document.getElementById("wall").is("selected")) {
-              console.log("selected")
-              document.getElementById("wall").addState("selected");
+              // check if the input starts with 'delete'
+            } else if (transcript.indexOf('löschen') == 0) {
+              if (!document.getElementById("wall").is("löschen")) {
+                document.getElementById("wall").addState("löschen");
+              }
+
+            } else if (transcript.indexOf('nimm') == 0) {
+              if (!document.getElementById("wall").is("selected")) {
+                console.log("selected")
+                document.getElementById("wall").addState("selected");
+              }
+
+            } else if (transcript.indexOf('passt') == 0 || transcript.indexOf('hast') == 0) {
+              if (!document.getElementById("wall").is("deselected")) {
+                document.getElementById("wall").addState("deselected");
+              }
             }
-          }
-
-        } else if (transcript.indexOf('passt') == 0 || transcript.indexOf('hast') == 0) {
-          if (!document.getElementById("wall").is("deselected")) {
-            document.getElementById("wall").addState("deselected");
           }
         }
-        // Welcome Screen Interaction
-        if (document.getElementById("welcome-screen") !== undefined) {
-          if (transcript.indexOf('fertig') == 0 && !document.getElementById("welcome-screen").is("fertig")) {
-            document.getElementById("wall").addState("fertig");
-          }
-        }
-
       });
 
       recognition.addEventListener('end', recognition.start);
@@ -224,22 +278,9 @@
       if (!isMobile) {
         // make cursor invisible for non-mobile
         document.getElementById("cursor").setAttribute("material", "opacity", "0.0");
-        document.getElementById("cursor").setAttribute("material", "transparency", "true");
         document.getElementById("cursor").setAttribute("cursor", "rayOrigin", "mouse"); // set to entity
       }
-    // Define custom schema for syncing avatar color, set by random-color
-    // NAF.schemas.add({
-    //   template: '#avatar-template',
-    //   components: [
-    //     'position',
-    //     'rotation',
-    //     {
-    //       selector: '.head',
-    //       component: 'material',
-    //       property: 'color'
-    //     }
-    //   ]
-    // });
+
     </script>
   </a-scene>
 </body>

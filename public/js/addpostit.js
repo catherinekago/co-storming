@@ -1,27 +1,25 @@
 AFRAME.registerComponent('addpostit', {
-  schema:{
-    userName: {type: "string", default: "Rudolf"},
-    color: {type: "color", default: "red"},
-    isMobile: {type:"string", default: "true"}
-  },
 
   init: function () {
     // Method to create new entity of post it 
     function addPostIt(x, y) {
-      console.log("with click :" + x + " " + y)
       var postIt = document.createElement('a-entity');
       postIt.setAttribute("id", "myPostIt");
       postIt.setAttribute("networked", "template:#post-it-template; attachTemplateToLocal:true");
       let position = x + " " + (y) + " " + "-9.98";
       postIt.setAttribute("position", position);
+      postIt.setAttribute("material", "color", document.getElementById("scene").getAttribute("setupuser").usercolor)
+
+      // set up name tag
+      let nametag = document.createElement('a-entity');
+      nametag.setAttribute("text", "value", document.getElementById("scene").getAttribute("setupuser").username)
+      nametag.setAttribute("networked", "template:#post-it-name; attachTemplateToLocal:true");
+      postIt.appendChild(nametag);
 
       // Text Field Component 
       let textField = document.createElement('a-text');
-      textField.setAttribute("scale", "0.9 0.7 0.7");
-      textField.setAttribute("position", "-0.45 0.1 1000");
       textField.setAttribute("text", "value", "This is where \n the text will \n go");
-      textField.setAttribute("text", "width", "3");
-      textField.setAttribute("text", "color", "black");
+      textField.setAttribute("networked", "template:#post-it-text; attachTemplateToLocal:true");
       postIt.appendChild(textField);
 
       document.getElementById("scene").appendChild(postIt);
@@ -79,6 +77,7 @@ AFRAME.registerComponent('addpostit', {
       return;
     }
     // Create post it if voice command has been provided
+    // todo: adapt to changes
     if(this.el.is("neu")) {
       var postIt = document.createElement('a-entity');
       postIt.setAttribute("id", "myPostIt");
