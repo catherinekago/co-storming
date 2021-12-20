@@ -30,6 +30,8 @@
     keyboard-shortcuts="enterVR: false">
     <a-assets>
       <img id="delete-icon" src="/assets/delete.svg">
+      <img id="mic-icon-black" src="/assets/mic_black.svg">
+      <img id="mic-icon-white" src="/assets/mic_white.svg">
       <img id="grid" src="https://img.gs/bbdkhfbzkk/stretch/https://i.imgur.com/25P1geh.png" crossorigin="anonymous">
       <img id="sky" src="https://img.gs/bbdkhfbzkk/2048x2048,stretch/https://i.imgur.com/WqlqEkq.jpg"
         crossorigin="anonymous" />
@@ -68,6 +70,7 @@
     <!-- Welcome Screen -->
     <a-entity id="welcome-screen" geometry="primitive: plane" position=" 0 6 -4.1" scale=" 0.2 0.14 0.4"
       material="color: black">
+      <a-image id="name-mic" class="colorMicrophone" visible="false" scale="0.1 0.1 1" animation="property: material.opacity; to: 0.5 1.0; loop: true; dur: 1250; easing: easeInOutCubic" position="0 0.15 0.02 "src="#mic-icon-white"></a-image>
       <a-text color="#ca9" position="0 0.35 0.02" width="3" scale=" 0.3 0.3 0.1" baseline="center" align="center"
         anchor="center" value="Co-Storming Space"></a-text>
       <a-text color="#ca9" position="0 0.25 0.02" width="2" scale=" 0.3 0.3 0.1" baseline="center" align="center"
@@ -83,31 +86,37 @@
       <a-entity visible="false" selectcolor="color: #58f" id="color-input-blue" class="color-btn"
         geometry="primitive: plane" position="-0.3 -0.15 0.02" scale=" 0.1 0.13 0.1" material="color: white"
         text="baseline:center; align:center; anchor: center; width:4; value: Blau; color:black">
+        <a-image class="colorMicrophone" visible="false" scale="0.25 0.25 1" position=" 0.45 0.38 0.1"src="#mic-icon-black"></a-image>
       </a-entity>
 
       <a-entity visible="false" selectcolor="color: #6b7" id="color-input-green" class="color-btn"
         geometry="primitive: plane" position="-0.15 -0.15 0.02" scale=" 0.1 0.13 0.1" material="color: white"
         text="baseline:center; align:center; anchor: center; width:4; value: Gruen; color:black">
+        <a-image class="colorMicrophone" visible="false" scale="0.25 0.25 1" position=" 0.38 0.38 0.1"src="#mic-icon-black"></a-image>
       </a-entity>
 
       <a-entity visible="false" selectcolor="color: #f6b" id="color-input-pink" class="color-btn"
         geometry="primitive: plane" position="0 -0.15 0.02" scale=" 0.1 0.13 0.1" material="color: white"
         text="baseline:center; align:center; anchor: center; width:4; value: Rosa; color:black">
+        <a-image class="colorMicrophone" visible="false" scale="0.25 0.25 1" position=" 0.30 0.38 0.1"src="#mic-icon-black"></a-image>
       </a-entity>
 
       <a-entity visible="false" selectcolor="color: #c84" id="color-input-orange" class="color-btn"
         geometry="primitive: plane" position="0.15 -0.15 0.02" scale=" 0.1 0.13 0.1" material="color: white"
         text="baseline:center; align:center; anchor: center; width:4; value: Orange; color:black">
+        <a-image class="colorMicrophone" visible="false" scale="0.25 0.25 1" position=" 0.25 0.38 0.1"src="#mic-icon-black"></a-image>
       </a-entity>
 
       <a-entity visible="false" selectcolor="color: #e45" id="color-input-red" class="color-btn"
         geometry="primitive: plane" position="0.3 -0.15 0.02" scale=" 0.1 0.13 0.1" material="color: white"
         text="baseline:center; align:center; anchor: center; width:4; value: Rot; color:black">
+        <a-image class="colorMicrophone" visible="false" scale="0.25 0.25 1" position=" 0.20 0.38 0.1"src="#mic-icon-black"></a-image>
       </a-entity>
 
       <a-entity visible="false" visible="false" submitinfo="" id="welcome-submit" class="" geometry="primitive: plane"
         position="0 -0.35 0.02" scale=" 0.1 0.1 0.1" material="color: white"
         text="baseline:center; align:center; anchor: center; width:4; value: Fertig; color:black">
+        <a-image class="colorMicrophone" visible="false" scale="0.25 0.3 1" position=" 0.35 0.40 0.1"src="#mic-icon-black"></a-image>
       </a-entity>
     </a-entity>
 
@@ -223,10 +232,23 @@
         document.getElementById("color-input-pink").classList.add("clickable");
         document.getElementById("color-input-orange").classList.add("clickable");
         document.getElementById("color-input-red").classList.add("clickable");
+
+        // show microphone icon if on mobile : for final remove "!""
+        if (!AFRAME.utils.device.isMobile()) {
+          let micIcons = document.getElementsByClassName("colorMicrophone");
+        for (var i = 0; i < micIcons.length; i++) {
+          micIcons.item(i).setAttribute("visible", "true");
+         }
+        }
+
       }
 
-
+// For final: remove "!""
       if (!AFRAME.utils.device.isMobile()) {
+
+        // set welcomescreen mic visible
+          document.getElementById("name-mic").setAttribute("visible", "true");
+
 
         // Add web speech api 
         window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -253,6 +275,7 @@
               } else if (document.getElementById("name-input").getAttribute("value").length === 0) {
                 document.getElementById("scene").setAttribute("setupuser", "username", transcript);
                 document.getElementById("name-input").setAttribute("value", transcript)
+                document.getElementById("name-mic").remove();
                 revealWelcomeScreenPartTwo(document.getElementById("scene").getAttribute("setupuser").username);
 
               }
