@@ -28,7 +28,7 @@ AFRAME.registerComponent('movepostit', {
         // Add listener to event of being selected
         this.el.addEventListener("stateadded", function (event) {
             if (event.detail === "selected") {
-            document.getElementById("cursor").setAttribute("material", "color", "#000");
+                document.getElementById("cursor").setAttribute("material", "color", "#000");
 
             }
         });
@@ -50,9 +50,36 @@ AFRAME.registerComponent('movepostit', {
 
     },
     tick: function () {
+        // check if user is providing voice input for post it text
+        if (document.getElementById("scene").getAttribute("setupuser").postitinput !== "" && this.el.is(document.getElementById("scene").getAttribute("setupuser").username)) {
+
+            let input = document.getElementById("scene").getAttribute("setupuser").postitinput;
+            let textfields = document.getElementsByClassName("postit-text");
+            for (var i = 0; i < textfields.length; i++) {
+                if (textfields.item(i).parentElement.is(document.getElementById("scene").getAttribute("setupuser").username) && textfields.item(i).parentElement.is("typing")) {
+                    console.log("now add this: " + document.getElementById("scene").getAttribute("setupuser").postitinput);
+                    textfields.item(i).setAttribute("value", input);
+                    document.getElementById("scene").setAttribute("setupuser", "postitinput", "");
+                    document.getElementById("wall").removeState("justcreated");
+                    // remove mic icon
+                    let icons = document.getElementsByClassName("postitMicrophone");
+                    for (var i = 0; i < icons.length; i++) {
+                        if (icons.item(i).parentElement.is(document.getElementById("scene").getAttribute("setupuser").username) && icons.item(i).parentElement.is("typing")) {
+                            icons.item(i).setAttribute("visible", "false");
+                            icons.item(i).parentElement.removeState(document.getElementById("scene").getAttribute("setupuser").postitinput);
+                            icons.item(i).parentElement.removeState("typing");
+                        }
+                    }
+
+                }
+
+            }
+
+
+        }
         if (!this.raycaster) {
             return;
-          }  // Not intersecting.
+        }  // Not intersecting.
 
         if (this.el.is("selected") && this.el.is(this.userId)) {
             if (!this.raycaster) { return; }  // Not intersecting.
@@ -80,22 +107,9 @@ AFRAME.registerComponent('movepostit', {
                 this.el.removeState(this.el.userId);
             }
             document.getElementById("wall").removeState("deselected");
-        } else if (document.getElementById("scene").getAttribute("setupuser").postitinput !== "" && this.el.is(document.getElementById("scene").getAttribute("setupuser").username)){
+        }
 
-            let input = document.getElementById("scene").getAttribute("setupuser").postitinput;
-            let textfields = document.getElementsByClassName("postit-text");
-            for (var i = 0; i < textfields.length; i++) {
-                if( textfields.item(i).parentElement.is(document.getElementById("scene").getAttribute("setupuser").username) && textfields.item(i).parentElement.is("typing")){
-                    console.log("now add this: " + document.getElementById("scene").getAttribute("setupuser").postitinput);
-                    textfields.item(i).setAttribute("value", input);
-                    document.getElementById("scene").setAttribute("setupuser", "postitinput", "");
-                    document.getElementById("wall").removeState("justcreated");
-                    textfields.item(i).parentElement.removeState(document.getElementById("scene").getAttribute("setupuser").postitinput);
-                    textfields.item(i).parentElement.removeState("typing");
-                }
-             }
 
-          }
     }
 
 });

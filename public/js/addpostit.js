@@ -89,7 +89,24 @@ AFRAME.registerComponent('addpostit', {
       let position = positionX + " " + intersection.point.y + " " + "-9.98";
       postIt.setAttribute("position", position);
       postIt.setAttribute("material", "color", document.getElementById("scene").getAttribute("setupuser").usercolor);
-      postitborder.appendChild(postIt);
+
+      // Set up mic icon
+      var micIcon = document.createElement("a-image");
+      micIcon.classList.add("postitMicrophone");
+      micIcon.setAttribute("visible", "true");
+      micIcon.setAttribute("scale", "0.5 0.5 1");
+      micIcon.setAttribute("animation", "property", "material.opacity");
+      micIcon.setAttribute("animation", "to", "0.5 1.0");
+      micIcon.setAttribute("animation", "loop", "true");
+      micIcon.setAttribute("animation", "dur", "1250");
+      micIcon.setAttribute("animation", "easing", "easeInOutCubic");
+      micIcon.setAttribute("position", "0 -0.015 0.02");
+      micIcon.setAttribute("src", "#mic-icon-white");
+      postIt.appendChild(micIcon);
+
+      // <a-image id="name-mic" class="colorMicrophone" visible="true" scale="0.5 0.5 1"
+      // animation="property: material.opacity; to: 0.5 1.0; loop: true; dur: 1250; easing: easeInOutCubic"
+      // position="0 -0.015 0.02 " src="#mic-icon-white"></a-image>
 
       // set up name tag
       let nametag = document.createElement('a-entity');
@@ -103,7 +120,7 @@ AFRAME.registerComponent('addpostit', {
       textField.classList.add("postit-text");
       postIt.appendChild(textField);
 
-      document.getElementById("scene").appendChild(postitborder);
+      document.getElementById("scene").appendChild(postIt);
 
 
     }
