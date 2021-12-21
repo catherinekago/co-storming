@@ -5,6 +5,8 @@ AFRAME.registerComponent('movepostit', {
     },
 
     init: function () {
+        this.el.addState(document.getElementById("scene").getAttribute("setupuser").username);
+        this.el.addState("typing");
 
         // Add listener that selects and deselects a post it 
         this.el.addEventListener('click', function (event) {
@@ -26,17 +28,20 @@ AFRAME.registerComponent('movepostit', {
         // Add listener to event of being selected
         this.el.addEventListener("stateadded", function (event) {
             if (event.detail === "selected") {
+                // todo: change to selectborder;
             }
         });
 
         this.el.addEventListener('raycaster-intersected', evt => {
             this.raycaster = evt.detail.el;
             this.el.addState("intersected");
+            // todo: add hoverborder
         });
 
         this.el.addEventListener('raycaster-intersected-cleared', evt => {
             this.raycaster = null;
             this.el.removeState("intersected");
+            // todo: remove hoverborder
         });
 
 
@@ -68,10 +73,26 @@ AFRAME.registerComponent('movepostit', {
         } else if (intersection && !this.el.is("deselected") && document.getElementById("wall").is("deselected")) {
             if (this.el.is(this.el.userId)) {
                 this.el.removeState("selected");
+                //todo: change to hoverborder
                 this.el.removeState(this.el.userId);
             }
             document.getElementById("wall").removeState("deselected");
-        }
+        } else if (document.getElementById("scene").getAttribute("setupuser").postitinput !== "" && this.el.is(document.getElementById("scene").getAttribute("setupuser").username)){
+
+            let input = document.getElementById("scene").getAttribute("setupuser").postitinput;
+            let textfields = document.getElementsByClassName("postit-text");
+            for (var i = 0; i < textfields.length; i++) {
+                if( textfields.item(i).parentElement.is(document.getElementById("scene").getAttribute("setupuser").username) && textfields.item(i).parentElement.is("typing")){
+                    console.log("now add this: " + document.getElementById("scene").getAttribute("setupuser").postitinput);
+                    textfields.item(i).setAttribute("value", input);
+                    document.getElementById("scene").setAttribute("setupuser", "postitinput", "");
+                    document.getElementById("wall").removeState("justcreated");
+                    textfields.item(i).parentElement.removeState(document.getElementById("scene").getAttribute("setupuser").postitinput);
+                    textfields.item(i).parentElement.removeState("typing");
+                }
+             }
+
+          }
     }
 
 });

@@ -4,7 +4,6 @@ AFRAME.registerComponent('selectcolor', {
       },
 
     init: function () {
-  
       this.el.addEventListener("click", function (event) {
         // delete parent component (post-it)
         event.stopPropagation();
