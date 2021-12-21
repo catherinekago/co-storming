@@ -47,8 +47,8 @@
 
             <a-entity
               speech-command="command: delete; type: function; function: voiceDelete; targetElement: #cursor; targetComponent: teleporter; function: teleport; keyCode: 13">
+            </a-entity>
           </a-entity>
-        </a-entity>
       </template>
 
       <template id="post-it-text">
@@ -67,7 +67,7 @@
 
 
     <!-- Welcome Screen -->
-    <a-entity id="welcome-screen" geometry="primitive: plane" position=" 0 6 -4.1" scale=" 0.2 0.14 0.4"
+    <a-entity id="welcome-screen" geometry="primitive: plane" position=" 0 6 -6" scale=" 3 2.5 0.4"
       material="color: black">
       <a-image id="name-mic" class="colorMicrophone" visible="false" scale="0.1 0.1 1"
         animation="property: material.opacity; to: 0.5 1.0; loop: true; dur: 1250; easing: easeInOutCubic"
@@ -87,7 +87,7 @@
       <a-entity visible="false" selectcolor="color: #58f" id="color-input-blue" class="color-btn"
         geometry="primitive: plane" position="-0.3 -0.15 0.02" scale=" 0.1 0.13 0.1" material="color: white"
         text="baseline:center; align:center; anchor: center; width:4; value: Blau; color:black">
-        <a-image class="colorMicrophone" visible="false" scale="0.25 0.25 1" position=" 0.45 0.38 0.1"
+        <a-image class="colorMicrophone" visible="false" scale="0.25 0.25 1" position=" 0.38 0.38 0.1"
           src="#mic-icon-black"></a-image>
       </a-entity>
 
@@ -101,28 +101,28 @@
       <a-entity visible="false" selectcolor="color: #f6b" id="color-input-pink" class="color-btn"
         geometry="primitive: plane" position="0 -0.15 0.02" scale=" 0.1 0.13 0.1" material="color: white"
         text="baseline:center; align:center; anchor: center; width:4; value: Rosa; color:black">
-        <a-image class="colorMicrophone" visible="false" scale="0.25 0.25 1" position=" 0.30 0.38 0.1"
+        <a-image class="colorMicrophone" visible="false" scale="0.25 0.25 1" position=" 0.38 0.38 0.1"
           src="#mic-icon-black"></a-image>
       </a-entity>
 
       <a-entity visible="false" selectcolor="color: #c84" id="color-input-orange" class="color-btn"
         geometry="primitive: plane" position="0.15 -0.15 0.02" scale=" 0.1 0.13 0.1" material="color: white"
         text="baseline:center; align:center; anchor: center; width:4; value: Orange; color:black">
-        <a-image class="colorMicrophone" visible="false" scale="0.25 0.25 1" position=" 0.25 0.38 0.1"
+        <a-image class="colorMicrophone" visible="false" scale="0.25 0.25 1" position=" 0.38 0.38 0.1"
           src="#mic-icon-black"></a-image>
       </a-entity>
 
       <a-entity visible="false" selectcolor="color: #e45" id="color-input-red" class="color-btn"
         geometry="primitive: plane" position="0.3 -0.15 0.02" scale=" 0.1 0.13 0.1" material="color: white"
         text="baseline:center; align:center; anchor: center; width:4; value: Rot; color:black">
-        <a-image class="colorMicrophone" visible="false" scale="0.25 0.25 1" position=" 0.20 0.38 0.1"
+        <a-image class="colorMicrophone" visible="false" scale="0.25 0.25 1" position=" 0.38 0.38 0.1"
           src="#mic-icon-black"></a-image>
       </a-entity>
 
       <a-entity visible="false" visible="false" submitinfo="" id="welcome-submit" class="" geometry="primitive: plane"
         position="0 -0.35 0.02" scale=" 0.1 0.1 0.1" material="color: white"
         text="baseline:center; align:center; anchor: center; width:4; value: Fertig; color:black">
-        <a-image class="colorMicrophone" visible="false" scale="0.25 0.3 1" position=" 0.35 0.40 0.1"
+        <a-image class="colorMicrophone" visible="false" scale="0.25 0.3 1" position=" 0.35 0.36 0.1"
           src="#mic-icon-black"></a-image>
       </a-entity>
     </a-entity>
@@ -256,6 +256,47 @@
         // set welcomescreen mic visible
         document.getElementById("name-mic").setAttribute("visible", "true");
 
+        // create voice interface
+        var voiceInterface = document.createElement('a-entity');
+        voiceInterface.setAttribute("id", "voiceInterface");
+        voiceInterface.setAttribute("geometry", "primitive", "plane");
+        voiceInterface.setAttribute("position", "0 -0.075 -0.1");
+        voiceInterface.setAttribute("scale", "1 0.022 1");
+
+        voiceInterface.setAttribute("material", "color", "white");
+        voiceInterface.setAttribute("material", "opacity", "0.25");
+
+
+        // create microphoneIcon
+        var voiceInterfaceMic = document.createElement('a-image');
+        voiceInterfaceMic.setAttribute("src", "#mic-icon-black");
+        voiceInterfaceMic.setAttribute("scale", "0.007 0.3 0.001");
+        voiceInterfaceMic.setAttribute("position", "-0.08 -0.2 -0.001");
+        voiceInterface.appendChild(voiceInterfaceMic);
+
+        // create microphone text
+        var voiceInterfaceMicText = document.createElement('a-text');
+        voiceInterfaceMicText.setAttribute("value", "");
+        voiceInterfaceMicText.setAttribute("scale", "0.02 0.7 0.001");
+        voiceInterfaceMicText.setAttribute("position", "-0.075 -0.18 -0.001");
+        voiceInterfaceMicText.setAttribute("color", "black");
+        voiceInterfaceMicText.setAttribute("align", "left");
+        voiceInterface.appendChild(voiceInterfaceMicText);
+
+        // create bulb icon
+        var voiceInterfaceHelp = document.createElement('a-image');
+        voiceInterfaceHelp.setAttribute("src", "#mic-icon-black");
+        voiceInterfaceHelp.setAttribute("scale", "0.007 0.3 0.001");
+        voiceInterfaceHelp.setAttribute("position", "-0.08 0.2 -0.001");
+        voiceInterface.appendChild(voiceInterfaceHelp);
+
+        document.getElementById("player").appendChild(voiceInterface);
+
+
+        // <a-image id="name-mic" class="colorMicrophone" visible="false" scale="0.1 0.1 1"
+        //   animation="property: material.opacity; to: 0.5 1.0; loop: true; dur: 1250; easing: easeInOutCubic"
+        //   position="0 0.15 0.02 " src="#mic-icon-white"></a-image>
+        // create text field where transcript is put to give user feedback 
 
         // Add web speech api 
         window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -273,12 +314,13 @@
 
           // check if the voice input has ended
           if (event.results[0].isFinal) {
+            voiceInterfaceMicText.setAttribute("value", transcript);
             console.log(transcript);
             // Welcome Screen Interaction
             if (document.getElementById("welcome-screen") !== null) {
               if (transcript.indexOf('fertig') == 0 && !document.getElementById("welcome-screen").is("fertig")) {
                 document.getElementById("welcome-submit").click();
-                // If value of name is empty, put last heard utterance into it 
+                // todo: add black bar to camera bottom 
               } else if (document.getElementById("name-input").getAttribute("value").length === 0) {
                 document.getElementById("scene").setAttribute("setupuser", "username", transcript);
                 document.getElementById("name-input").setAttribute("value", transcript)
@@ -298,38 +340,38 @@
                 document.getElementById("color-input-orange").click();
               }
             } else {
-            if (document.getElementById("wall").is("justcreated")) {
-              document.getElementById("scene").setAttribute("setupuser", "postitinput", transcript);
-            } else {
-              // check if the input starts with 'create'
-              if (transcript.indexOf('neu') == 0) {
-                if (!document.getElementById("wall").is("neu")) {
-                  document.getElementById("wall").addState("neu");
+              if (document.getElementById("wall").is("justcreated")) {
+                document.getElementById("scene").setAttribute("setupuser", "postitinput", transcript);
+              } else {
+                // check if the input starts with 'create'
+                if (transcript.indexOf('neu') == 0) {
+                  if (!document.getElementById("wall").is("neu")) {
+                    document.getElementById("wall").addState("neu");
+                  }
+                  // check if the input starts with 'delete'
+                } else if (transcript.indexOf('löschen') == 0) {
+                  if (!document.getElementById("wall").is("löschen")) {
+                    document.getElementById("wall").addState("löschen");
+                  }
+
+                } else if (transcript.indexOf('nimm') == 0) {
+                  if (!document.getElementById("wall").is("selected")) {
+                    console.log("selected")
+                    document.getElementById("wall").addState("selected");
+                  }
+
+                } else if (transcript.indexOf('passt') == 0 || transcript.indexOf('hast') == 0) {
+                  if (!document.getElementById("wall").is("deselected")) {
+                    document.getElementById("wall").addState("deselected");
+                  }
                 }
-              // check if the input starts with 'delete'
-            } else if (transcript.indexOf('löschen') == 0) {
-              if (!document.getElementById("wall").is("löschen")) {
-                document.getElementById("wall").addState("löschen");
-              }
-
-            } else if (transcript.indexOf('nimm') == 0) {
-              if (!document.getElementById("wall").is("selected")) {
-                console.log("selected")
-                document.getElementById("wall").addState("selected");
-              }
-
-            } else if (transcript.indexOf('passt') == 0 || transcript.indexOf('hast') == 0) {
-              if (!document.getElementById("wall").is("deselected")) {
-                document.getElementById("wall").addState("deselected");
               }
             }
           }
-          }
-        }
         });
 
-      recognition.addEventListener('end', recognition.start);
-      recognition.start();
+        recognition.addEventListener('end', recognition.start);
+        recognition.start();
       }
 
 
