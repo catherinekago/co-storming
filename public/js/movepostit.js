@@ -57,8 +57,25 @@ AFRAME.registerComponent('movepostit', {
             let textfields = document.getElementsByClassName("postit-text");
             for (var i = 0; i < textfields.length; i++) {
                 if (textfields.item(i).parentElement.is(document.getElementById("scene").getAttribute("setupuser").username) && textfields.item(i).parentElement.is("typing")) {
-                    console.log("now add this: " + document.getElementById("scene").getAttribute("setupuser").postitinput);
-                    textfields.item(i).setAttribute("value", input);
+                    let formattedInput = "";
+                    while (input.length > 0) {
+                        let upperBound = input.length >= 15 ? 15 : input.length;
+                        let newLine = input.substring(0, upperBound);
+                        // if last char is " ", remove
+                        if (newLine[newLine.length - 1] === " ") {
+                            newLine = newLine.substring(0, upperBound - 1) + "\n"
+                            // if last char of newLine and first char of rest !== " " add -
+                        } else if (newLine[newLine.length - 1] !== " " && input.length > 15 && input[16] !== " ") {
+                            newLine = newLine + "-" + "\n"
+                        } else {
+                            newLine = newLine + "\n"
+                        }
+                            input = input.substring(upperBound, input.length);
+                        formattedInput = formattedInput + newLine;
+                        console.log(formattedInput)
+                    }
+
+                    textfields.item(i).setAttribute("value", formattedInput);
                     document.getElementById("scene").setAttribute("setupuser", "postitinput", "");
                     document.getElementById("wall").removeState("justcreated");
                     // remove mic icon
