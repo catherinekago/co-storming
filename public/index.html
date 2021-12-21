@@ -47,7 +47,6 @@
 
             <a-entity
               speech-command="command: delete; type: function; function: voiceDelete; targetElement: #cursor; targetComponent: teleporter; function: teleport; keyCode: 13">
-            </a-entity>
           </a-entity>
         </a-entity>
       </template>
@@ -337,9 +336,17 @@
 
       // Make cursor invisible for desktop 
       var isMobile = AFRAME.utils.device.isMobile();
+      // todo: remove "!""
       if (!isMobile) {
         // make cursor invisible for non-mobile
+        document.getElementById("cursor").setAttribute("material", "opacity", "1.0");
+        document.getElementById("cursor").setAttribute("material", "color", "white");
+        document.getElementById("cursor").setAttribute("transparent", "false");
+        document.getElementById("cursor").setAttribute("cursor", "rayOrigin", "mouse"); // set to entity
+      } else {
         document.getElementById("cursor").setAttribute("material", "opacity", "0.0");
+        document.getElementById("cursor").setAttribute("material", "color", "white");
+        document.getElementById("cursor").setAttribute("transparent", "true");
         document.getElementById("cursor").setAttribute("cursor", "rayOrigin", "mouse"); // set to entity
       }
 

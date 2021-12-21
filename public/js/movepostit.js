@@ -28,20 +28,23 @@ AFRAME.registerComponent('movepostit', {
         // Add listener to event of being selected
         this.el.addEventListener("stateadded", function (event) {
             if (event.detail === "selected") {
-                // todo: change to selectborder;
+            document.getElementById("cursor").setAttribute("material", "color", "#000");
+
             }
         });
 
         this.el.addEventListener('raycaster-intersected', evt => {
             this.raycaster = evt.detail.el;
             this.el.addState("intersected");
-            // todo: add hoverborder
+            document.getElementById("cursor").setAttribute("material", "color", "#ff3");
+
         });
 
         this.el.addEventListener('raycaster-intersected-cleared', evt => {
             this.raycaster = null;
             this.el.removeState("intersected");
-            // todo: remove hoverborder
+            document.getElementById("cursor").setAttribute("material", "color", "white");
+
         });
 
 
@@ -73,7 +76,7 @@ AFRAME.registerComponent('movepostit', {
         } else if (intersection && !this.el.is("deselected") && document.getElementById("wall").is("deselected")) {
             if (this.el.is(this.el.userId)) {
                 this.el.removeState("selected");
-                //todo: change to hoverborder
+                document.getElementById("cursor").setAttribute("material", "color", "#ff3");
                 this.el.removeState(this.el.userId);
             }
             document.getElementById("wall").removeState("deselected");

@@ -82,8 +82,6 @@ AFRAME.registerComponent('addpostit', {
       this.el.addState("justcreated");
       this.el.removeState("neu");
 
-      var postitborder = document.createElement('a-entity');
-
       var postIt = document.createElement('a-entity');
       postIt.setAttribute("id", "myPostIt");
       postIt.setAttribute("networked", "template:#post-it-template; attachTemplateToLocal:true");
