@@ -224,6 +224,8 @@
       });
 
       //@Marion: you need to call this once the user has submitted his name
+      // Name should be written into: document.getElementById("scene").setAttribute("setupuser", "username", NAMEFROMKEYBOARD);
+      // and  document.getElementById("name-input").setAttribute("value", NAMEFROMKEYBOARD)
       function revealWelcomeScreenPartTwo(name) {
         let welcometext = "Wilkommen, " + name + "! \n \n  Waehle deine Farbe, \n und dann geht es auch schon los!";
         document.getElementById("welcome-text").setAttribute("value", welcometext);
@@ -241,8 +243,7 @@
         document.getElementById("color-input-orange").classList.add("clickable");
         document.getElementById("color-input-red").classList.add("clickable");
 
-        // show microphone icon if on mobile : for final remove "!""
-        if (!AFRAME.utils.device.isMobile()) {
+        if (AFRAME.utils.device.isMobile()) {
           let micIcons = document.getElementsByClassName("colorMicrophone");
           for (var i = 0; i < micIcons.length; i++) {
             micIcons.item(i).setAttribute("visible", "true");
@@ -251,8 +252,7 @@
 
       }
 
-      // For final: remove "!""
-      if (!AFRAME.utils.device.isMobile()) {
+      if (AFRAME.utils.device.isMobile()) {
 
         // set welcomescreen mic visible
         document.getElementById("name-mic").setAttribute("visible", "true");
@@ -395,8 +395,8 @@
 
       // Make cursor invisible for desktop 
       var isMobile = AFRAME.utils.device.isMobile();
-      // todo: remove "!""
-      if (!isMobile) {
+
+      if (isMobile) {
         // make cursor invisible for non-mobile
         document.getElementById("cursor").setAttribute("material", "opacity", "1.0");
         document.getElementById("cursor").setAttribute("material", "color", "white");
