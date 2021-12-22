@@ -18,6 +18,7 @@ AFRAME.registerComponent('submitinfo', {
         document.getElementById("welcome-screen").removeState("fertig");
         this.el.parentNode.remove();
         document.getElementById("wall").classList.add("clickable");
+        document.getElementById("helptext").setAttribute("value", "");
       }
     },
   });

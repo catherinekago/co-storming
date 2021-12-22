@@ -37,6 +37,9 @@ AFRAME.registerComponent('movepostit', {
             this.raycaster = evt.detail.el;
             this.el.addState("intersected");
             document.getElementById("cursor").setAttribute("material", "color", "#ff3");
+            if (!this.el.is("selected") && !this.el.is("typing")) {
+                document.getElementById("helptext").setAttribute("value", "Sag 'nimm' wenn du das Post-It bewegen, oder 'loeschen' wenn du es loeschen willst");
+            }
 
         });
 
@@ -44,6 +47,9 @@ AFRAME.registerComponent('movepostit', {
             this.raycaster = null;
             this.el.removeState("intersected");
             document.getElementById("cursor").setAttribute("material", "color", "white");
+            if ( !this.el.is("typing")) {
+            document.getElementById("helptext").setAttribute("value", "Sag 'neu' um ein Post-It zu erstellen");
+            }
 
         });
 
@@ -85,6 +91,7 @@ AFRAME.registerComponent('movepostit', {
                             icons.item(i).setAttribute("visible", "false");
                             icons.item(i).parentElement.removeState(document.getElementById("scene").getAttribute("setupuser").postitinput);
                             icons.item(i).parentElement.removeState("typing");
+                            document.getElementById("helptext").setAttribute("value", "Sag 'nimm' wenn du das Post-It bewegen, oder 'loeschen' wenn du es loeschen willst");
                         }
                     }
 
@@ -99,6 +106,7 @@ AFRAME.registerComponent('movepostit', {
         }  // Not intersecting.
 
         if (this.el.is("selected") && this.el.is(this.userId)) {
+            document.getElementById("helptext").setAttribute("value", "Sag 'passt' wenn du das Post-It hier platzieren willst");
             if (!this.raycaster) { return; }  // Not intersecting.
             let intersection = this.raycaster.components.raycaster.getIntersection(document.getElementById("wall"));
             if (!intersection) { return; } // Not intersecting
@@ -116,15 +124,19 @@ AFRAME.registerComponent('movepostit', {
             this.el.addState("selected");
             this.el.addState(this.el.userId);
             document.getElementById("wall").removeState("selected");
-            console.log("understood")
         } else if (intersection && !this.el.is("deselected") && document.getElementById("wall").is("deselected")) {
             if (this.el.is(this.el.userId)) {
                 this.el.removeState("selected");
                 document.getElementById("cursor").setAttribute("material", "color", "#ff3");
                 this.el.removeState(this.el.userId);
+                document.getElementById("helptext").setAttribute("value", "Sag 'nimm' wenn du das Post-It bewegen, oder 'loeschen' wenn du es loeschen willst");
             }
             document.getElementById("wall").removeState("deselected");
         }
+        if(document.getElementById("wall").is("löschen")) {
+            this.el.remove();
+            document.getElementById("wall").removeState("löschen");
+          }
 
 
     }

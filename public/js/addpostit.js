@@ -61,9 +61,14 @@ AFRAME.registerComponent('addpostit', {
     // Event listeners to listen for raycaster on wall
     this.el.addEventListener('raycaster-intersected', evt => {
       this.raycaster = evt.detail.el;
+      if (!this.el.is("justcreated") && !this.el.is("neu") && !this.el.is("löschen")){
+        document.getElementById("helptext").setAttribute("value", "Sag 'neu' um ein Post-It zu erstellen");
+      }
+
     });
     this.el.addEventListener('raycaster-intersected-cleared', evt => {
       this.raycaster = null;
+      document.getElementById("helptext").setAttribute("value", "");
     });
 
   },
@@ -81,6 +86,7 @@ AFRAME.registerComponent('addpostit', {
     if(this.el.is("neu")) {
       this.el.addState("justcreated");
       this.el.removeState("neu");
+      document.getElementById("helptext").setAttribute("value", "Sag was du auf deinem Post-It notieren willst");
 
       var postIt = document.createElement('a-entity');
       postIt.setAttribute("id", "myPostIt");

@@ -15,6 +15,7 @@ AFRAME.registerComponent('selectcolor', {
 
             document.getElementById("welcome-submit").setAttribute("visible", "true");
             document.getElementById("welcome-submit").classList.add("clickable");
+            document.getElementById("helptext").setAttribute("value", "Sag 'fertig' wenn du bereit bist!");
 
       });
 

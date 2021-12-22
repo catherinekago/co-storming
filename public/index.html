@@ -32,6 +32,7 @@
       <img id="delete-icon" src="/assets/delete.svg">
       <img id="mic-icon-black" src="/assets/mic_black.svg">
       <img id="mic-icon-white" src="/assets/mic_white.svg">
+      <img id="bulb-icon-black" src="/assets/bulb_black.svg">
       <img id="grid" src="https://img.gs/bbdkhfbzkk/stretch/https://i.imgur.com/25P1geh.png" crossorigin="anonymous">
       <img id="sky" src="https://img.gs/bbdkhfbzkk/2048x2048,stretch/https://i.imgur.com/WqlqEkq.jpg"
         crossorigin="anonymous" />
@@ -285,10 +286,21 @@
 
         // create bulb icon
         var voiceInterfaceHelp = document.createElement('a-image');
-        voiceInterfaceHelp.setAttribute("src", "#mic-icon-black");
+        voiceInterfaceHelp.setAttribute("src", "#bulb-icon-black");
         voiceInterfaceHelp.setAttribute("scale", "0.007 0.3 0.001");
         voiceInterfaceHelp.setAttribute("position", "-0.08 0.2 -0.001");
         voiceInterface.appendChild(voiceInterfaceHelp);
+
+        // create help text
+        var voiceInterfaceHelpText = document.createElement('a-text');
+        voiceInterfaceHelpText.id = "helptext";
+        voiceInterfaceHelpText.setAttribute("value", "");
+        voiceInterfaceHelpText.setAttribute("scale", "0.02 0.7 0.001");
+        voiceInterfaceHelpText.setAttribute("position", "-0.075 0.2 -0.001");
+        voiceInterfaceHelpText.setAttribute("color", "black");
+        voiceInterfaceHelpText.setAttribute("align", "left");
+        voiceInterfaceHelpText.setAttribute("value", "Sag deinen Namen :)");
+        voiceInterface.appendChild(voiceInterfaceHelpText);
 
         document.getElementById("player").appendChild(voiceInterface);
 
@@ -311,10 +323,12 @@
         // waiting for speech results
         recognition.addEventListener('result', event => {
           const transcript = event.results[0][0].transcript;
+          voiceInterfaceMicText.setAttribute("value", transcript + " ...");
 
           // check if the voice input has ended
           if (event.results[0].isFinal) {
             voiceInterfaceMicText.setAttribute("value", transcript);
+            
             console.log(transcript);
             // Welcome Screen Interaction
             if (document.getElementById("welcome-screen") !== null) {
@@ -326,6 +340,7 @@
                 document.getElementById("name-input").setAttribute("value", transcript)
                 document.getElementById("name-mic").remove();
                 revealWelcomeScreenPartTwo(document.getElementById("scene").getAttribute("setupuser").username);
+                voiceInterfaceHelpText.setAttribute("value", "Sprich den Namen deiner Farbe aus");
 
               }
               else if (transcript.indexOf('blau') == 0 && !document.getElementById("color-input-blue").is("selected")) {
@@ -347,6 +362,7 @@
                 if (transcript.indexOf('neu') == 0) {
                   if (!document.getElementById("wall").is("neu")) {
                     document.getElementById("wall").addState("neu");
+                    document.getElementById("helptext").setAttribute("value", "Sprich aus was du auf dein Post-It schreiben willst");
                   }
                   // check if the input starts with 'delete'
                 } else if (transcript.indexOf('löschen') == 0) {
@@ -358,6 +374,7 @@
                   if (!document.getElementById("wall").is("selected")) {
                     console.log("selected")
                     document.getElementById("wall").addState("selected");
+                    
                   }
 
                 } else if (transcript.indexOf('passt') == 0 || transcript.indexOf('hast') == 0) {
