@@ -1,0 +1,11 @@
+Model Information:
+* title:	Stela 120コーヒーテーブル WN
+* source:	https://sketchfab.com/3d-models/stela-120-wn-624c4cd3bb014a91a45b8bfc4ff257ae
+* author:	classe-saga (https://sketchfab.com/classe-saga)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Stela 120コーヒーテーブル WN" (https://sketchfab.com/3d-models/stela-120-wn-624c4cd3bb014a91a45b8bfc4ff257ae) by classe-saga (https://sketchfab.com/classe-saga) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

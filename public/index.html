@@ -32,6 +32,10 @@
       <a-asset-item id="carpet" src="/assets/carpet/scene.gltf"></a-asset-item>
       <a-asset-item id="couch" src="/assets/couch/scene.gltf"></a-asset-item>
       <a-asset-item id="neonletters" src="/assets/neonletters/scene.gltf"></a-asset-item>
+      <a-asset-item id="coffeetable" src="/assets/coffeetable/scene.gltf"></a-asset-item>
+      <a-asset-item id="window" src="/assets/window/scene.gltf"></a-asset-item>
+      <a-asset-item id="door" src="/assets/door/scene.gltf"></a-asset-item>
+      <img id="cityscape" src="/assets/cityscape.jpg">
       <img id="delete-icon" src="/assets/delete.svg">
       <img id="mic-icon-black" src="/assets/mic_black.svg">
       <img id="mic-icon-white" src="/assets/mic_white.svg">
@@ -128,14 +132,12 @@
           src="#mic-icon-black"></a-image>
       </a-entity>
     </a-entity>
-
     <a-entity addpostit="" id="wall" geometry="primitive: box" position=" 0 6 -10" scale=" 20 12 0.001"
       material="color: #eee"></a-entity>
-      <a-entity id="wallLeft" geometry="primitive: box" rotation= "0 90 0" position=" -10 6 0" scale=" 24 12 0.001"
-      material="color: #eee"></a-entity>
+      <a-image src="#cityscape" rotation="0 90 0" position="-14 3 0" scale="25 25 25 "></a-image>
       <a-entity id="wallRight" rotation= "0 90 0" geometry="primitive: box" position=" 10 6 0" scale=" 24 12 0.001"
       material="color: #310"></a-entity>
-      <a-entity id="wallBack" geometry="primitive: box" position=" 0 6 9" scale=" 24 12 0.001"
+      <a-entity id="wallBack" geometry="primitive: box" position=" 0 6 9" scale=" 22 12 0.001"
       material="color: #eee"></a-entity>
 
 
@@ -156,7 +158,10 @@
     <a-entity gltf-model="#neonletters" rotation="0 270 0" position="9.5 8 0" scale= "3 3 1" ></a-entity>
     <a-entity gltf-model="#couch" rotation="0 270 0" position="8 0 -0.8" scale= "0.045 0.055 0.05"></a-entity>
     <a-entity gltf-model="#carpet" rotation="0 90 0" position="14 0 0" scale= "0.015 0.012 0.01"></a-entity>
-    <a-plane src="#groundTexture" id="floor" rotation="-90 0 0" width="30" height="30"
+    <a-entity gltf-model="#coffeetable" rotation="0 85 0" position="2.3 4 -2" scale= "2 3 2"></a-entity>
+    <a-entity gltf-model="#window" rotation="0 90 0" position="-12.55 0.5 14" scale= "0.137 0.15 0.1"></a-entity>
+    <a-entity gltf-model="#door" rotation="0 0 0" position="-3 0 8.8" scale= "0.0015 0.0015 0.0015"></a-entity>
+    <a-plane src="#groundTexture" id="floor" rotation="-90 0 0" width="25" height="30"
     repeat="2 2"></a-plane>
     <a-plane id="ceiling" material="color: #fff" rotation="90 0 0"position="0 12 0" width="30" height="30"
     repeat="2 2"></a-plane>

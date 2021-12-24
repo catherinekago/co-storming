@@ -1,0 +1,11 @@
+Model Information:
+* title:	White Door
+* source:	https://sketchfab.com/3d-models/white-door-9dd342e2c2af46ee81a80483986b6754
+* author:	I am Cassia (https://sketchfab.com/iamCassia)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "White Door" (https://sketchfab.com/3d-models/white-door-9dd342e2c2af46ee81a80483986b6754) by I am Cassia (https://sketchfab.com/iamCassia) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
