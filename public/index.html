@@ -141,7 +141,7 @@
       material="color: #eee"></a-entity>
 
 
-    <a-entity id="player" multitouch-look-controls camera position="0 6 -4">
+    <a-entity id="player" look-controls camera position="0 6 -4">
       <a-entity id="cursor" cursor="rayOrigin: mouse" raycaster="far: 250; objects: .clickable;" position="0 0 -1"
         geometry="primitive: ring; radiusInner: 0.04; radiusOuter: 0.05" material="color: black; shader: flat"
         animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1">
@@ -255,7 +255,7 @@
         document.getElementById("color-input-orange").classList.add("clickable");
         document.getElementById("color-input-red").classList.add("clickable");
 
-        if (AFRAME.utils.device.isMobile()) {
+        if (!AFRAME.utils.device.isMobile()) {
           let micIcons = document.getElementsByClassName("colorMicrophone");
           for (var i = 0; i < micIcons.length; i++) {
             micIcons.item(i).setAttribute("visible", "true");
@@ -264,7 +264,7 @@
 
       }
 
-      if (AFRAME.utils.device.isMobile()) {
+      if (!AFRAME.utils.device.isMobile()) {
 
         // set welcomescreen mic visible
         document.getElementById("name-mic").setAttribute("visible", "true");
@@ -408,17 +408,17 @@
       // Make cursor invisible for desktop 
       var isMobile = AFRAME.utils.device.isMobile();
 
-      if (isMobile) {
+      if (!isMobile) {
         // make cursor invisible for non-mobile
         document.getElementById("cursor").setAttribute("material", "opacity", "1.0");
         document.getElementById("cursor").setAttribute("material", "color", "white");
         document.getElementById("cursor").setAttribute("transparent", "false");
-        document.getElementById("cursor").setAttribute("cursor", "rayOrigin", "mouse"); // set to entity
+        document.getElementById("cursor").setAttribute("cursor", "rayOrigin", "entity"); // set to entity - mouse
       } else {
         document.getElementById("cursor").setAttribute("material", "opacity", "0.0");
         document.getElementById("cursor").setAttribute("material", "color", "white");
         document.getElementById("cursor").setAttribute("transparent", "true");
-        document.getElementById("cursor").setAttribute("cursor", "rayOrigin", "mouse"); // set to entity
+        document.getElementById("cursor").setAttribute("cursor", "rayOrigin", "entity"); // set to entity - mouse
       }
 
     </script>
