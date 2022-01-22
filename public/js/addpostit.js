@@ -106,7 +106,7 @@ AFRAME.registerComponent('addpostit', {
       micIcon.setAttribute("animation", "loop", "true");
       micIcon.setAttribute("animation", "dur", "1250");
       micIcon.setAttribute("animation", "easing", "easeInOutCubic");
-      micIcon.setAttribute("position", "0 -0.015 0.02");
+      micIcon.setAttribute("position", "0 -0.015 100");
       micIcon.setAttribute("src", "#mic-icon-white");
       postIt.appendChild(micIcon);
 

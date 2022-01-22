@@ -29,7 +29,6 @@
   <a-scene detectpostits setupuser="" id="scene" networked-scene="room: basic; debug: true;"
     keyboard-shortcuts="enterVR: false">
     <a-assets>
-      <a-asset-item id="carpet" src="/assets/carpet/scene.gltf"></a-asset-item>
       <a-asset-item id="couch" src="/assets/couch/scene.gltf"></a-asset-item>
       <a-asset-item id="neonletters" src="/assets/neonletters/scene.gltf"></a-asset-item>
       <a-asset-item id="coffeetable" src="/assets/coffeetable/scene.gltf"></a-asset-item>
@@ -49,9 +48,9 @@
       <!-- Templates -->
       <!-- Post It -->
       <template id="post-it-template">
-        <a-entity movepostit="Kago" class="post-it clickable" geometry="primitive:box" scale="1 1 0.00002">
+        <a-entity movepostit="Kago" class="post-it clickable" geometry="primitive:box" scale="1.4 1.4 0.00002">
           <a-entity delete="" geometry="primitive: plane" class="delete-icon clickable" material="src:#delete-icon"
-            scale="0.12 0.12 0" position="0.39 0.4 100">
+            scale="0.16 0.16 0" position="0.39 0.4 100">
 
             <a-entity
               speech-command="command: delete; type: function; function: voiceDelete; targetElement: #cursor; targetComponent: teleporter; function: teleport; keyCode: 13">
@@ -60,13 +59,13 @@
       </template>
 
       <template id="post-it-text">
-        <a-entity scale="0.9 0.7 0.7" position="-0.45 -0.1 1000" text="width: 3; color: black">
+        <a-entity scale="0.9 0.7 0" position="-0.45 -0.1 100" text="width: 3; color: black">
         </a-entity>
         </a-entity>
       </template>
 
       <template id="post-it-name">
-        <a-entity id="name" scale="0.6 0.8 2" position="0.75 0.37 1000" text="color:black;width: 4;">
+        <a-entity id="name" scale="0.6 0.8 0" position="0.75 0.37 100" text="color:black;width: 4;">
         </a-entity>
       </template>
 
@@ -157,7 +156,6 @@
     <a-entity light="type: ambient; color: #f2eee9; intensity: 0.8" position="0 10 0"></a-entity>
     <a-entity gltf-model="#neonletters" rotation="0 270 0" position="9.5 8 0" scale= "3 3 1" ></a-entity>
     <a-entity gltf-model="#couch" rotation="0 270 0" position="8 0 -0.8" scale= "0.045 0.055 0.05"></a-entity>
-    <a-entity gltf-model="#carpet" rotation="0 90 0" position="14 0 0" scale= "0.015 0.012 0.01"></a-entity>
     <a-entity gltf-model="#coffeetable" rotation="0 85 0" position="2.3 4 -2" scale= "2 3 2"></a-entity>
     <a-entity gltf-model="#window" rotation="0 90 0" position="-12.55 0.5 14" scale= "0.137 0.15 0.1"></a-entity>
     <a-entity gltf-model="#door" rotation="0 0 0" position="-3 0 8.8" scale= "0.0015 0.0015 0.0015"></a-entity>
@@ -266,6 +264,10 @@
 
       if (AFRAME.utils.device.isMobile()) {
 
+        // Move player closer to wall
+        // <a-entity id="player" look-controls camera position="0 6 -4">
+          document.getElementById("player").setAttribute("position", "0 6 -4.5")
+
         // set welcomescreen mic visible
         document.getElementById("name-mic").setAttribute("visible", "true");
 
@@ -274,7 +276,7 @@
         voiceInterface.setAttribute("id", "voiceInterface");
         voiceInterface.setAttribute("geometry", "primitive", "plane");
         voiceInterface.setAttribute("position", "0 -0.075 -0.1");
-        voiceInterface.setAttribute("scale", "1 0.022 1");
+        voiceInterface.setAttribute("scale", "1 0.062 1");
 
         voiceInterface.setAttribute("material", "color", "white");
         voiceInterface.setAttribute("material", "opacity", "0.25");
@@ -283,15 +285,15 @@
         // create microphoneIcon
         var voiceInterfaceMic = document.createElement('a-image');
         voiceInterfaceMic.setAttribute("src", "#mic-icon-black");
-        voiceInterfaceMic.setAttribute("scale", "0.007 0.3 0.001");
-        voiceInterfaceMic.setAttribute("position", "-0.08 -0.2 -0.001");
+        voiceInterfaceMic.setAttribute("scale", "0.015 0.25 0.001");
+        voiceInterfaceMic.setAttribute("position", "-0.13 0 -0.001");
         voiceInterface.appendChild(voiceInterfaceMic);
 
         // create microphone text
         var voiceInterfaceMicText = document.createElement('a-text');
         voiceInterfaceMicText.setAttribute("value", "");
-        voiceInterfaceMicText.setAttribute("scale", "0.02 0.7 0.001");
-        voiceInterfaceMicText.setAttribute("position", "-0.075 -0.18 -0.001");
+        voiceInterfaceMicText.setAttribute("scale", "0.03 0.7 0.001");
+        voiceInterfaceMicText.setAttribute("position", "-0.12 0 -0.001");
         voiceInterfaceMicText.setAttribute("color", "black");
         voiceInterfaceMicText.setAttribute("align", "left");
         voiceInterface.appendChild(voiceInterfaceMicText);
@@ -299,16 +301,16 @@
         // create bulb icon
         var voiceInterfaceHelp = document.createElement('a-image');
         voiceInterfaceHelp.setAttribute("src", "#bulb-icon-black");
-        voiceInterfaceHelp.setAttribute("scale", "0.007 0.3 0.001");
-        voiceInterfaceHelp.setAttribute("position", "-0.08 0.2 -0.001");
+        voiceInterfaceHelp.setAttribute("scale", "0.012 0.3 0.001");
+        voiceInterfaceHelp.setAttribute("position", "-0.13 0.3 -0.001");
         voiceInterface.appendChild(voiceInterfaceHelp);
 
         // create help text
         var voiceInterfaceHelpText = document.createElement('a-text');
         voiceInterfaceHelpText.id = "helptext";
         voiceInterfaceHelpText.setAttribute("value", "");
-        voiceInterfaceHelpText.setAttribute("scale", "0.02 0.7 0.001");
-        voiceInterfaceHelpText.setAttribute("position", "-0.075 0.2 -0.001");
+        voiceInterfaceHelpText.setAttribute("scale", "0.03 0.7 0.001");
+        voiceInterfaceHelpText.setAttribute("position", "-0.12 0.3 -0.001");
         voiceInterfaceHelpText.setAttribute("color", "black");
         voiceInterfaceHelpText.setAttribute("align", "left");
         voiceInterfaceHelpText.setAttribute("value", "Sag deinen Namen :)");
@@ -413,7 +415,7 @@
         document.getElementById("cursor").setAttribute("material", "opacity", "1.0");
         document.getElementById("cursor").setAttribute("material", "color", "white");
         document.getElementById("cursor").setAttribute("transparent", "false");
-        document.getElementById("cursor").setAttribute("cursor", "rayOrigin", "mouse"); // set to entity
+        document.getElementById("cursor").setAttribute("cursor", "rayOrigin", "entity"); // set to entity
       } else {
         document.getElementById("cursor").setAttribute("material", "opacity", "0.0");
         document.getElementById("cursor").setAttribute("material", "color", "white");
